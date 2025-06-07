@@ -19,6 +19,7 @@ const Portfolio = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const sectionsRef = useRef({});
   const parallaxRef = useRef();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Typewriter effect for subtitle
   const [text] = useTypewriter({
@@ -184,7 +185,7 @@ const Portfolio = () => {
   const MeSvgComponent = () => (
     <div className="relative rounded-[15px] overflow-hidden bg-gradient-to-r from-fuchsia-500/20 to-blue-500/20 p-1 backdrop-blur-sm border border-fuchsia-400/30 shadow-lg hover:shadow-fuchsia-400/30 transition-all duration-300">
       <img 
-        src="/me.svg"
+        src={process.env.PUBLIC_URL + '/me.svg'}
         alt="Manya Jain"
         className="w-full h-full rounded-[15px]"
         style={{
@@ -225,31 +226,31 @@ const Portfolio = () => {
     // List of images from photoshop and sketches (hardcoded for now, can be automated)
     setGalleryImages([
       // Photoshop
-      '/visual_art_gallery/photoshop/pamphlet1.png',
-      '/visual_art_gallery/photoshop/pamphlet2.png',
-      '/visual_art_gallery/photoshop/movie poster.jpg',
-      '/visual_art_gallery/photoshop/graphics  neon.png',
-      '/visual_art_gallery/photoshop/manipulation.jpg',
-      '/visual_art_gallery/photoshop/Digital_Painting_fbxDadar_Manya_Jain.png',
-      '/visual_art_gallery/photoshop/digital painting2.png',
-      '/visual_art_gallery/photoshop/dgpainting.png',
-      '/visual_art_gallery/photoshop/batman.jpg',
-      '/visual_art_gallery/photoshop/3d2.jpg',
-      '/visual_art_gallery/photoshop/3d-final.jpg',
-      '/visual_art_gallery/photoshop/3.png',
-      '/visual_art_gallery/photoshop/10.png',
+      process.env.PUBLIC_URL + '/visual_art_gallery/photoshop/pamphlet1.png',
+      process.env.PUBLIC_URL + '/visual_art_gallery/photoshop/pamphlet2.png',
+      process.env.PUBLIC_URL + '/visual_art_gallery/photoshop/movie poster.jpg',
+      process.env.PUBLIC_URL + '/visual_art_gallery/photoshop/graphics  neon.png',
+      process.env.PUBLIC_URL + '/visual_art_gallery/photoshop/manipulation.jpg',
+      process.env.PUBLIC_URL + '/visual_art_gallery/photoshop/Digital_Painting_fbxDadar_Manya_Jain.png',
+      process.env.PUBLIC_URL + '/visual_art_gallery/photoshop/digital painting2.png',
+      process.env.PUBLIC_URL + '/visual_art_gallery/photoshop/dgpainting.png',
+      process.env.PUBLIC_URL + '/visual_art_gallery/photoshop/batman.jpg',
+      process.env.PUBLIC_URL + '/visual_art_gallery/photoshop/3d2.jpg',
+      process.env.PUBLIC_URL + '/visual_art_gallery/photoshop/3d-final.jpg',
+      process.env.PUBLIC_URL + '/visual_art_gallery/photoshop/3.png',
+      process.env.PUBLIC_URL + '/visual_art_gallery/photoshop/10.png',
       // Sketches
-      '/visual_art_gallery/sketches/IMG_6223.png',
-      '/visual_art_gallery/sketches/IMG_6225.png',
-      '/visual_art_gallery/sketches/IMG_6226.png',
-      '/visual_art_gallery/sketches/IMG_6228.png',
-      '/visual_art_gallery/sketches/IMG_9775.png',
-      '/visual_art_gallery/sketches/IMG_9776.png',
-      '/visual_art_gallery/sketches/IMG_9777.png',
-      '/visual_art_gallery/sketches/IMG_9778.png',
-      '/visual_art_gallery/sketches/IMG_9779.png',
-      '/visual_art_gallery/sketches/IMG_9782(1).png',
-      '/visual_art_gallery/sketches/IMG_9783.png',
+      process.env.PUBLIC_URL + '/visual_art_gallery/sketches/IMG_6223.png',
+      process.env.PUBLIC_URL + '/visual_art_gallery/sketches/IMG_6225.png',
+      process.env.PUBLIC_URL + '/visual_art_gallery/sketches/IMG_6226.png',
+      process.env.PUBLIC_URL + '/visual_art_gallery/sketches/IMG_6228.png',
+      process.env.PUBLIC_URL + '/visual_art_gallery/sketches/IMG_9775.png',
+      process.env.PUBLIC_URL + '/visual_art_gallery/sketches/IMG_9776.png',
+      process.env.PUBLIC_URL + '/visual_art_gallery/sketches/IMG_9777.png',
+      process.env.PUBLIC_URL + '/visual_art_gallery/sketches/IMG_9778.png',
+      process.env.PUBLIC_URL + '/visual_art_gallery/sketches/IMG_9779.png',
+      process.env.PUBLIC_URL + '/visual_art_gallery/sketches/IMG_9782(1).png',
+      process.env.PUBLIC_URL + '/visual_art_gallery/sketches/IMG_9783.png',
     ]);
   }, []);
 
@@ -318,37 +319,66 @@ const Portfolio = () => {
       <div className="relative z-10">
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-lg border-b border-fuchsia-400/30 shadow-lg">
-        <div className="max-w-7xl mx-auto px-8 py-5">
-          <div className="flex justify-between items-center">
-            <motion.div 
-              className="text-2xl font-bold font-['Roboto'] text-fuchsia-400 drop-shadow-lg"
-              whileHover={{ scale: 1.1, color: '#ff00ea' }}
-              transition={{ type: 'spring', stiffness: 300 }}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-4 flex justify-between items-center">
+          <motion.div 
+            className="text-2xl font-bold font-['Roboto'] text-fuchsia-400 drop-shadow-lg"
+            whileHover={{ scale: 1.1, color: '#ff00ea' }}
+            transition={{ type: 'spring', stiffness: 300 }}
+          >
+            MJ
+          </motion.div>
+          {/* Desktop Menu */}
+          <div className="hidden md:flex space-x-6 lg:space-x-10">
+            {['hero', 'about', 'services', 'skills', 'projects', 'achievements', 'contact'].map((section) => (
+              <motion.button
+                key={section}
+                onClick={() => scrollToSection(section)}
+                className={`capitalize font-semibold text-base md:text-lg transition-colors duration-300 hover:text-fuchsia-400 px-2 py-1 rounded-lg ${activeSection === section ? 'text-fuchsia-400 bg-fuchsia-400/10' : 'text-white/80'}`}
+                whileHover={{ scale: 1.1, y: -2 }}
+                transition={{ type: 'spring', stiffness: 400 }}
+              >
+                {section === 'hero' ? 'Home' : section}
+              </motion.button>
+            ))}
+          </div>
+          {/* Hamburger Icon for Mobile */}
+          <div className="md:hidden flex items-center">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="text-fuchsia-400 focus:outline-none p-2"
+              aria-label="Open mobile menu"
             >
-              MJ
-            </motion.div>
-            <div className="hidden md:flex space-x-10">
-              {['hero', 'about', 'services', 'skills', 'projects', 'achievements', 'contact'].map((section) => (
-                <motion.button
-                  key={section}
-                  onClick={() => scrollToSection(section)}
-                  className={`capitalize font-semibold text-lg transition-colors duration-300 hover:text-fuchsia-400 px-2 py-1 rounded-lg ${activeSection === section ? 'text-fuchsia-400 bg-fuchsia-400/10' : 'text-white/80'}`}
-                  whileHover={{ scale: 1.1, y: -2 }}
-                  transition={{ type: 'spring', stiffness: 400 }}
-                >
-                  {section === 'hero' ? 'Home' : section}
-                </motion.button>
-              ))}
-            </div>
+              <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                {mobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 8h16M4 16h16" />
+                )}
+              </svg>
+            </button>
           </div>
         </div>
+        {/* Mobile Menu Dropdown */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-black/95 border-b border-fuchsia-400/30 shadow-lg px-4 py-4 space-y-2">
+            {['hero', 'about', 'services', 'skills', 'projects', 'achievements', 'contact'].map((section) => (
+              <button
+                key={section}
+                onClick={() => { setMobileMenuOpen(false); scrollToSection(section); }}
+                className={`block w-full text-left capitalize font-semibold text-base py-2 px-2 rounded-lg transition-colors duration-200 ${activeSection === section ? 'text-fuchsia-400 bg-fuchsia-400/10' : 'text-white/80'} hover:text-fuchsia-400`}
+              >
+                {section === 'hero' ? 'Home' : section}
+              </button>
+            ))}
+          </div>
+        )}
       </nav>
 
       {/* Hero Section */}
       <section
         id="hero"
         ref={el => sectionsRef.current.hero = el}
-        className="min-h-screen flex items-center justify-center relative overflow-hidden px-6 md:px-16 py-24"
+        className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 sm:px-6 md:px-16 py-16 md:py-24"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-black/90 via-fuchsia-900/30 to-black/90" />
         <div className="relative z-10 text-center max-w-4xl mx-auto px-6 md:px-12 py-10 rounded-3xl shadow-2xl bg-black/30 backdrop-blur-xl border border-fuchsia-400/20">
@@ -369,7 +399,7 @@ const Portfolio = () => {
               }}
             >
               <img 
-                src="/MANYA.gif" 
+                src={process.env.PUBLIC_URL + '/MANYA.gif'} 
                 alt="MANYA Animation" 
                 className="w-full h-full object-contain mix-blend-screen rounded-[18px]" 
                 style={{ 
@@ -419,7 +449,7 @@ const Portfolio = () => {
         id="about"
         ref={el => { sectionsRef.current.about = el; aboutRef(el); }}
         style={aboutSpring}
-        className="py-24 px-8 md:px-20 bg-fuchsia-900/20 backdrop-blur-xl border-t border-fuchsia-400/10 rounded-3xl my-12 shadow-xl"
+        className="py-16 px-4 sm:px-8 md:px-20 bg-fuchsia-900/20 backdrop-blur-xl border-t border-fuchsia-400/10 rounded-3xl my-8 md:my-12 shadow-xl"
       >
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -494,7 +524,7 @@ const Portfolio = () => {
         id="services"
         ref={el => { sectionsRef.current.services = el; servicesRef(el); }}
         style={servicesSpring}
-        className="py-24 px-8 md:px-20 bg-fuchsia-900/20 backdrop-blur-xl border-t border-fuchsia-400/10 rounded-3xl my-12 shadow-xl"
+        className="py-16 px-4 sm:px-8 md:px-20 bg-fuchsia-900/20 backdrop-blur-xl border-t border-fuchsia-400/10 rounded-3xl my-8 md:my-12 shadow-xl"
       >
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -554,7 +584,7 @@ const Portfolio = () => {
         id="skills"
         ref={el => { sectionsRef.current.skills = el; skillsRef(el); }}
         style={skillsSpring}
-        className="py-24 px-8 md:px-20 bg-fuchsia-900/20 backdrop-blur-xl border-t border-fuchsia-400/10 rounded-3xl my-12 shadow-xl"
+        className="py-16 px-4 sm:px-8 md:px-20 bg-fuchsia-900/20 backdrop-blur-xl border-t border-fuchsia-400/10 rounded-3xl my-8 md:my-12 shadow-xl"
       >
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -663,7 +693,7 @@ const Portfolio = () => {
         id="projects"
         ref={el => { sectionsRef.current.projects = el; projectsRef(el); }}
         style={projectsSpring}
-        className="py-24 px-8 md:px-20 bg-fuchsia-900/20 backdrop-blur-xl border-t border-fuchsia-400/10 rounded-3xl my-12 shadow-xl"
+        className="py-16 px-4 sm:px-8 md:px-20 bg-fuchsia-900/20 backdrop-blur-xl border-t border-fuchsia-400/10 rounded-3xl my-8 md:my-12 shadow-xl"
       >
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -690,38 +720,38 @@ const Portfolio = () => {
                   title: '"Sprouts" - CGI Film',
                   desc: 'Led a team of 10 to create a 2-minute CGI film within 2.5 months',
                   role: 'Team Lead',
-                  image: <img src="/images/Sprouts/IMG_1752.gif" alt="Sprouts GIF" className="w-full h-48 object-cover rounded-xl" />,
+                  image: <img src={process.env.PUBLIC_URL + '/images/Sprouts/IMG_1752.gif'} alt="Sprouts GIF" className="w-full h-48 object-cover rounded-xl" />,
                   extra: <>
-                    <img src="/images/Sprouts/animatics.gif" alt="Sprouts Animatics" className="w-full h-32 object-cover rounded-xl my-2" />
-                    <img src="/images/Sprouts/Short_film_storyboard (1).gif" alt="Storyboard GIF" className="w-full h-32 object-cover rounded-xl my-2" />
-                    <a href="/images/Sprouts/Short_film_storyboard (1).pdf" target="_blank" rel="noopener noreferrer" className="text-cyan-400 underline">Storyboard PDF</a>
+                    <img src={process.env.PUBLIC_URL + '/images/Sprouts/animatics.gif'} alt="Sprouts Animatics" className="w-full h-32 object-cover rounded-xl my-2" />
+                    <img src={process.env.PUBLIC_URL + '/images/Sprouts/Short_film_storyboard (1).gif'} alt="Storyboard GIF" className="w-full h-32 object-cover rounded-xl my-2" />
+                    <a href={process.env.PUBLIC_URL + '/images/Sprouts/Short_film_storyboard (1).pdf'} target="_blank" rel="noopener noreferrer" className="text-cyan-400 underline">Storyboard PDF</a>
                   </>
                 },
                 {
                   title: 'Rockstar Competition',
                   desc: 'National Runner-Up for character rigging and animation',
                   role: 'Animator',
-                  image: <img src="/images/Rockstar/Dadar_Manya_Rigging&Animation_Animation_File.gif" alt="Rockstar Animation" className="w-full h-48 object-cover rounded-xl" />,
-                  extra: <img src="/images/Rockstar/Dadar_Manya_Animation&Rigging_Rigging_Test.gif" alt="Rockstar Rigging Test" className="w-full h-32 object-cover rounded-xl my-2" />
+                  image: <img src={process.env.PUBLIC_URL + '/images/Rockstar/Dadar_Manya_Rigging&Animation_Animation_File.gif'} alt="Rockstar Animation" className="w-full h-48 object-cover rounded-xl" />,
+                  extra: <img src={process.env.PUBLIC_URL + '/images/Rockstar/Dadar_Manya_Animation&Rigging_Rigging_Test.gif'} alt="Rockstar Rigging Test" className="w-full h-32 object-cover rounded-xl my-2" />
                 },
                 {
                   title: 'Stop Motion Animation',
                   desc: 'First Prize in ILLENIUM Animation Competition',
                   role: 'Animator',
-                  image: <img src="/images/Stopmotion/IMG_4007.gif" alt="Stop Motion" className="w-full h-48 object-cover rounded-xl" />
+                  image: <img src={process.env.PUBLIC_URL + '/images/Stopmotion/IMG_4007.gif'} alt="Stop Motion" className="w-full h-48 object-cover rounded-xl" />
                 },
                 {
                   title: 'GAFX Animation',
                   desc: 'National-level recognition for excellence in animation',
                   role: 'Animator',
-                  image: <img src="/images/GAFX_Animation/dialogue ref.gif" alt="GAFX Animation" className="w-full h-48 object-cover rounded-xl" />
+                  image: <img src={process.env.PUBLIC_URL + '/images/GAFX_Animation/dialogue ref.gif'} alt="GAFX Animation" className="w-full h-48 object-cover rounded-xl" />
                 },
                 {
                   title: 'Brand Campaign',
                   desc: 'Complete brand creation including logo, ads, and packaging',
                   role: 'Creative Director',
                   image: '📦',
-                  extra: <a href="/images/advertesment/Pencils.pdf" target="_blank" rel="noopener noreferrer" className="text-pink-400 underline">View Campaign PDF</a>
+                  extra: <a href={process.env.PUBLIC_URL + '/images/advertesment/Pencils.pdf'} target="_blank" rel="noopener noreferrer" className="text-pink-400 underline">View Campaign PDF</a>
                 },
                 {
                   title: 'Visual Art Gallery',
@@ -764,7 +794,7 @@ const Portfolio = () => {
       {/* Visual Art Gallery Section */}
       <animated.section
         id="visual-art-gallery"
-        className="py-24 px-8 md:px-20 bg-black border-t border-cyan-400/10 rounded-3xl my-12 shadow-xl"
+        className="py-16 px-4 sm:px-8 md:px-20 bg-black border-t border-cyan-400/10 rounded-3xl my-8 md:my-12 shadow-xl"
       >
         <div className="max-w-6xl mx-auto">
           <motion.h2
@@ -826,7 +856,7 @@ const Portfolio = () => {
         id="achievements"
         ref={el => { sectionsRef.current.achievements = el; achievementsRef(el); }}
         style={achievementsSpring}
-        className="py-24 px-8 md:px-20 bg-fuchsia-900/20 backdrop-blur-xl border-t border-fuchsia-400/10 rounded-3xl my-12 shadow-xl"
+        className="py-16 px-4 sm:px-8 md:px-20 bg-fuchsia-900/20 backdrop-blur-xl border-t border-fuchsia-400/10 rounded-3xl my-8 md:my-12 shadow-xl"
       >
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -913,7 +943,7 @@ const Portfolio = () => {
         id="contact"
         ref={el => { sectionsRef.current.contact = el; contactRef(el); }}
         style={contactSpring}
-        className="py-24 px-8 md:px-20 bg-fuchsia-900/20 backdrop-blur-xl border-t border-fuchsia-400/10 rounded-3xl my-12 shadow-xl"
+        className="py-16 px-4 sm:px-8 md:px-20 bg-fuchsia-900/20 backdrop-blur-xl border-t border-fuchsia-400/10 rounded-3xl my-8 md:my-12 shadow-xl"
       >
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -992,7 +1022,7 @@ const Portfolio = () => {
                 
                 <motion.div variants={fadeInUp}>
                   <motion.a
-                    href="/Manya Jain Resume.pdf"
+                    href={process.env.PUBLIC_URL + '/Manya Jain Resume.pdf'}
                     download
                     className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 inline-flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1 active:translate-y-0"
                     whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(0, 255, 247, 0.5)' }}
